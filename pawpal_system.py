@@ -65,7 +65,7 @@ class Task:
 
     # ------------------------------------------------------------------
     def __str__(self) -> str:
-        status = "✓" if self.completed else "○"
+        status = "[done]" if self.completed else "[pending]"
         freq_tag = f"[{self.frequency}]" if self.frequency != "once" else ""
         return (
             f"{status} {self.time}  {self.description} "
@@ -228,7 +228,7 @@ class Scheduler:
         for time_slot, group in seen.items():
             if len(group) > 1:
                 labels = ", ".join(f"{p.name}→{t.description}" for p, t in group)
-                warnings.append(f"⚠️  Conflict at {time_slot}: {labels}")
+                warnings.append(f"Conflict at {time_slot}: {labels}")
         return warnings
 
     # ------------------------------------------------------------------

@@ -14,7 +14,7 @@ from pawpal_system import Owner, Pet, Scheduler, Task
 # Page config
 # ---------------------------------------------------------------------------
 
-st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="wide")
+st.set_page_config(page_title="PawPal+", layout="wide")
 
 # ---------------------------------------------------------------------------
 # Session state bootstrap
@@ -31,7 +31,6 @@ if "sort_mode" not in st.session_state:
 # ---------------------------------------------------------------------------
 
 with st.sidebar:
-    st.image("https://em-content.zobj.net/source/apple/391/paw-prints_1f43e.png", width=60)
     st.title("PawPal+")
     st.caption("Smart pet care, simplified.")
     st.divider()
@@ -73,7 +72,7 @@ with st.sidebar:
                     st.warning("A pet with that name already exists.")
                 else:
                     st.session_state.owner.add_pet(Pet(pet_name_input.strip(), species_input))
-                    st.success(f"Added {pet_name_input.strip()} 🐾")
+                    st.success(f"Added {pet_name_input.strip()}.")
             else:
                 st.error("Pet name cannot be empty.")
 
@@ -82,20 +81,20 @@ with st.sidebar:
 # ---------------------------------------------------------------------------
 
 if st.session_state.owner is None:
-    st.title("🐾 Welcome to PawPal+")
+    st.title("Welcome to PawPal+")
     st.info("Enter your name in the sidebar to get started.")
     st.stop()
 
 owner: Owner = st.session_state.owner
 scheduler = Scheduler(owner)
 
-st.title(f"🐾 PawPal+  —  {owner.name}'s Dashboard")
+st.title(f"PawPal+ — {owner.name}'s Dashboard")
 
 # ---------------------------------------------------------------------------
 # Add Task
 # ---------------------------------------------------------------------------
 
-with st.expander("➕ Add a care task", expanded=not bool(owner.get_all_tasks())):
+with st.expander("Add a care task", expanded=not bool(owner.get_all_tasks())):
     if not owner.pets:
         st.warning("Add a pet in the sidebar first.")
     else:
@@ -149,7 +148,7 @@ st.divider()
 # Today's Schedule
 # ---------------------------------------------------------------------------
 
-st.subheader("📅 Today's Schedule")
+st.subheader("Today's Schedule")
 
 if not owner.pets or not owner.get_all_tasks():
     st.info("No tasks yet. Add a pet and some tasks above.")
@@ -188,10 +187,10 @@ else:
         st.warning(w)
 
     if not pairs:
-        st.success("✅ No pending tasks for today!")
+        st.success("No pending tasks for today.")
     else:
-        _PRIORITY_EMOJI = {"high": "🔴", "medium": "🟡", "low": "🟢"}
-        _FREQ_LABEL = {"once": "", "daily": "↻ daily", "weekly": "↻ weekly"}
+        _PRIORITY_EMOJI = {"high": "[high]", "medium": "[medium]", "low": "[low]"}
+        _FREQ_LABEL = {"once": "", "daily": "daily", "weekly": "weekly"}
 
         table_rows = []
         for pet, task in pairs:
@@ -203,13 +202,13 @@ else:
                 "Priority": f"{_PRIORITY_EMOJI[task.priority]} {task.priority}",
                 "Repeats": _FREQ_LABEL[task.frequency],
                 "Due": str(task.due_date),
-                "Done": "✓" if task.completed else "",
+                "Done": "yes" if task.completed else "",
             })
         st.table(table_rows)
 
     # Mark complete
     st.divider()
-    st.subheader("✅ Mark a task complete")
+    st.subheader("Mark a task complete")
 
     if not owner.get_all_tasks():
         st.info("No tasks to mark complete.")
@@ -239,7 +238,7 @@ else:
 # ---------------------------------------------------------------------------
 
 st.divider()
-st.subheader("🐾 Pet Overview")
+st.subheader("Pet Overview")
 
 if not owner.pets:
     st.info("No pets added yet.")
